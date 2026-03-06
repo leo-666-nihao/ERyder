@@ -18,21 +18,21 @@ public class Main {
         int batteryLevel = scanner.nextInt();
         bike.setBatteryLevel(batteryLevel);
         
-        // 3. 输入是否可用
+        // 3. input available or not
         System.out.print("input whether can be used (true/false): ");
         boolean available = scanner.nextBoolean();
         bike.setAvailable(available);
         
-        // 4. 输入行驶里程
+        // 4. input the km
         System.out.print("input the km of the bike (km): ");
         double kmDriven = scanner.nextDouble();
         bike.setKmDriven(kmDriven);
         
-        // 5. 调用 printBikeDetails() 统一输出
+        
         System.out.println("\n===== confirm the Bike detail =====");
         bike.printBikeDetails();
         
-        // 6. 测试 ride() 方法
+        
         System.out.println("\n===== runing test =====");
         bike.ride();
         
