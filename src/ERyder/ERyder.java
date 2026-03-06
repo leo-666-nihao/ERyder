@@ -31,8 +31,6 @@ prints that the bike is not available. */
     }
 
 
-    
-
     public int getBikeID() {
         return bikeID;
     }
