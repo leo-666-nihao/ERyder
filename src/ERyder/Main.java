@@ -8,31 +8,27 @@ public class Main {
         
         System.out.println("===== ERyde information input system =====\n");
         
-        // 1. record ID
-        System.out.print("put in ID: ");
-        int bikeID = scanner.nextInt();
-        bike.setBikeID(bikeID);
+        //  record ID
+        System.out.print("Input ID: ");
+        bike.setBikeID(scanner.nextInt());
         
-        // 2. input the battery remaining capacity and make a judgement
-        System.out.print("input the battery remaining capacity (0-100): ");
-        int batteryLevel = scanner.nextInt();
-        bike.setBatteryLevel(batteryLevel);
+        // input the battery remaining capacity and make a judgement
+        System.out.print("Input battery level (0-100): ");
+        bike.setBatteryLevel(scanner.nextInt());
         
-        // 3. 输入是否可用
-        System.out.print("input whether can be used (true/false): ");
-        boolean available = scanner.nextBoolean();
-        bike.setAvailable(available);
+        // input available or not
+        System.out.print("Input availability (true/false): ");
+        bike.setAvailable(scanner.nextBoolean());
         
-        // 4. 输入行驶里程
-        System.out.print("input the km of the bike (km): ");
-        double kmDriven = scanner.nextDouble();
-        bike.setKmDriven(kmDriven);
+        // input the km
+        System.out.print("Input km driven (km): ");
+        bike.setKmDriven(scanner.nextDouble());
         
-        // 5. 调用 printBikeDetails() 统一输出
+        //print the bike details
         System.out.println("\n===== confirm the Bike detail =====");
         bike.printBikeDetails();
         
-        // 6. 测试 ride() 方法
+        //running test
         System.out.println("\n===== runing test =====");
         bike.ride();
         
