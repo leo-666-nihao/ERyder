@@ -1,5 +1,4 @@
 package ERyder;
-
 import java.util.Scanner; 
 
 public class Main {
