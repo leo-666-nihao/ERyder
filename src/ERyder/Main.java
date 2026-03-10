@@ -2,13 +2,17 @@ package ERyder;
 import java.util.Scanner; 
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        ERyder bike = new ERyder();
-        
-        System.out.println("===== ERyde information input system =====\n");
-        
-        //  record ID
+        public static void main(String[] args) {
+        ERyder bike1 = new ERyder(101, 85, true, 15.5);
+        ERyder bike2 = new ERyder("user123", "555-1234", 102, 90, true, 20.0);    
+        bike1.printRideDetails(30);
+        bike2.printRideDetails(45);    
+        try (Scanner scanner = new Scanner(System.in)) {
+            ERyder bike = new ERyder("user123", "555-1234", 0, 0, true, 0.0);
+
+        //System.out.println("===== ERyde information input system =====\n");
+
+        /*//  record ID
         System.out.print("Input ID: ");
         bike.setBikeID(scanner.nextInt());
         
@@ -33,5 +37,7 @@ public class Main {
         bike.ride();
         
         scanner.close();
+    }*/
+        }
     }
 }

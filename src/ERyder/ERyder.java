@@ -1,22 +1,42 @@
 package ERyder;
 public class ERyder {
+    private String userId;
+    private String phone;
+    
+    //Constants
+    public static final String COMPANY_NAME = "ERyder";
+    public static final double BASE_FARE = 1.0;
+    public static final double PER_MINUTE_FARE = 0.5;
+    
     // Variables
     private int bikeID;
     private int batteryLevel;
     private boolean isAvailable;
     private double kmDriven;
+   
     
+    public ERyder(int bikeID, int batteryLevel, boolean isAvailable, double kmDriven) {
+        this.userId = "default_account";
+        this.phone = "default_phone";
+        this.bikeID = bikeID;
+        this.batteryLevel = batteryLevel;
+        this.isAvailable = isAvailable;
+        this.kmDriven = kmDriven;
+    }
+
     //Constructor
-    public ERyder(){
-        this.bikeID = 0;
-        this.batteryLevel = 0;
-        this.isAvailable = true;
-        this.kmDriven = 0.0;
+    public ERyder(String linkedAccount, String linkedPhoneNumber, 
+                  int bikeID, int batteryLevel, boolean isAvailable, double kmDriven) {
+        this.userId = linkedAccount;       
+        this.userId = linkedAccount;
+        this.phone = linkedPhoneNumber;
+        this.bikeID = bikeID;
+        this.batteryLevel = batteryLevel;
+        this.isAvailable = isAvailable;
+        this.kmDriven = kmDriven;
     }
     public void ride() {
-        /*This method checks the current battery level and if the bike is 
-available. If both are fine, then it prints that the bike is available. Otherwise, it 
-prints that the bike is not available. */
+        
         if (this.batteryLevel > 0 && this.isAvailable) {
             System.out.println("The bike is available.");
         } else {
@@ -65,5 +85,17 @@ prints that the bike is not available. */
     public void setKmDriven(double kmDriven) {
         this.kmDriven = kmDriven;
     }
-}
 
+public void printRideDetails(int usageInMinutes) {
+        double totalFare = calculateFare(usageInMinutes);
+        System.out.println("Linked Account: " + this.userId);
+        System.out.println("Linked Phone Number: " + this.phone);
+        System.out.println("Bike ID: " + this.bikeID);
+        System.out.println("Usage in Minutes: " + usageInMinutes);
+        System.out.println("Total Fare: " + totalFare);
+    }
+     
+    private double calculateFare(int usageInMinutes) {
+        return BASE_FARE + (PER_MINUTE_FARE * usageInMinutes);
+    }
+}
