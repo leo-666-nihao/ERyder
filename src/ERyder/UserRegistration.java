@@ -73,18 +73,16 @@ public class UserRegistration {
         }
          
     } 
-    private boolean analyseCardProvider(String cardProvider) {
-        if (cardProvider.equalsIgnoreCase("VISA") || 
-            cardProvider.equalsIgnoreCase("MasterCard") || 
-            cardProvider.equalsIgnoreCase("American Express")) {
-            return true;
-        } else {
-            System.out.println("Sorry, but we accept only VISA, MasterCard, or American Express cards. Please try again with a valid card.");
-            System.out.println("Going back to the start of the registration.");
-            registration();
-            return false;
-        }
+private boolean analyseCardProvider(String cardProvider) {
+    if (cardProvider.equalsIgnoreCase("VISA") || 
+        cardProvider.equalsIgnoreCase("MasterCard") || 
+        cardProvider.equalsIgnoreCase("American Express")) {
+        return true;
+    } else {
+        System.out.println("Sorry, but we accept only VISA, MasterCard, or American Express cards.");
+        return false; 
     }
+}
     
     
     private boolean analyseCardExpiryDate(String expiryDate) {
@@ -149,35 +147,14 @@ public class UserRegistration {
         }
     }
     private void finalCheckpoint() {
-        if (emailValid && ageValid && cardNumberValid && cardStillValid && validCVV) {
-            chargeFees();
-        } else {
-            System.out.println("Sorry, your registration was unsuccessful due to the following reason(s)");
-            
-            if (!emailValid) {
-                System.out.println("Invalid email address");
-            }
-            
-            if (!ageValid) {
-                System.out.println("Invalid age");
-            }
-            
-            if (!cardNumberValid) {
-                System.out.println("Invalid card number");
-            }
-            
-            if (!cardStillValid) {
-                System.out.println("Card has expired");
-            }
-            
-            if (!validCVV) {
-                System.out.println("Invalid CVV");
-            }
-            
-            System.out.println("Going back to the start of the registration process.");
-            registration();
-        }
+    if (emailValid && ageValid && cardNumberValid && cardStillValid && validCVV) {
+        chargeFees();
+        System.out.println(this.toString());
+    } else {
+        System.out.println("Sorry, your registration was unsuccessful.");
+        
     }
+}
     private void chargeFees() {
     if (minorAndBirthday) {
         feeToCharge = VIP_BASE_FEE * 0.75;
