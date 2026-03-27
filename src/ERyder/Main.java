@@ -22,7 +22,7 @@ public class Main {
     System.out.println(userFeedback.toString());
     
     System.out.println(registration); 
-    boolean runAdmin = false;
+    boolean runAdmin = true;
     if (runAdmin) {
         AdminPanel admin = new AdminPanel();
         admin.userManagementOptions();

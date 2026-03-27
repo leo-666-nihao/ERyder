@@ -14,13 +14,7 @@ public class AdminPanel {
         boolean exit = false;
         
         while (!exit) {
-            System.out.println("\nWelcome to E-Ryder Administrator Panel.");
-            System.out.println("What do you want to do?");
-            System.out.println("1. Add New Users");
-            System.out.println("2. View Registered Users");
-            System.out.println("3. Remove Registered Users");
-            System.out.println("4. Update Registered Users");
-            System.out.println("5. EXIT");
+            printMenu();
             System.out.print("Please enter your choice: ");
             
             String choice = scanner.nextLine().trim();
@@ -43,6 +37,9 @@ public class AdminPanel {
                     updateRegisteredUsers();
                     break;
                 case "5":
+                    demoBikeRentalSystem();
+                    break;
+                case "6":
                     System.out.println("Exiting the program. Goodbye!");
                     exit = true;
                     break;
@@ -60,7 +57,23 @@ public class AdminPanel {
             }
         }
     }
-
+     private void printMenu() {
+        System.out.println("\nWelcome to E-Ryder Administrator Panel.");
+        System.out.println("What do you want to do?");
+        System.out.println("1. Add New Users");
+        System.out.println("2. View Registered Users");
+        System.out.println("3. Remove Registered Users");
+        System.out.println("4. Update Registered Users");
+        System.out.println("5. Demo Bike Rental System");
+        System.out.println("6. EXIT");
+    }
+     private void demoBikeRentalSystem() {
+        System.out.println("\n=== Demo Bike Rental System ===");
+        ERyder demoBikeA = new ERyder(201, 75, true, 12.3);
+        ERyder demoBikeB = new ERyder("demoUser", "123-456", 202, 50, true, 8.7);
+        demoBikeA.printRideDetails(20);
+        demoBikeB.printRideDetails(35);
+    }
     private void addNewUsers() {
         System.out.println("=== Add New User ===");
         

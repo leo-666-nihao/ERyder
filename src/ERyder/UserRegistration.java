@@ -57,8 +57,9 @@ public class UserRegistration {
 
         System.out.print("Please enter your card expiry date (MM/YY): ");
         cardExpiryDate = scanner.nextLine();
-        if (!analyseCardProvider(cardProvider)) {
-            
+        cardStillValid = analyseCardExpiryDate(cardExpiryDate);
+        if (!cardStillValid) {
+            System.out.println("Your card is expired or the expiry date format is invalid.");
         }
         
         System.out.print("Please enter your card CVV: ");
@@ -167,7 +168,12 @@ private boolean analyseCardProvider(String cardProvider) {
     }
     
     String cardNumberStr = String.valueOf(cardNumber);
-    String lastFourDigits = cardNumberStr.substring(cardNumberStr.length() - 4);
+    String lastFourDigits;
+    if (cardNumberStr.length() <= 4) {
+        lastFourDigits = cardNumberStr;
+    } else {
+        lastFourDigits = cardNumberStr.substring(cardNumberStr.length() - 4);
+    }
     
     System.out.println("Thank you for your payment.");
     System.out.println("A fee of " + feeToCharge + " has been charged to your card ending with " + lastFourDigits);
@@ -177,12 +183,14 @@ public String toString() {
     String cardNumberStr = String.valueOf(cardNumber);
     String censoredPart = "";
     
-    if (cardNumberStr.length() > 4) {
+    String lastFourDigits;
+    if (cardNumberStr.length() <= 4) {
+        lastFourDigits = cardNumberStr;
+    } else {
         String maskPart = cardNumberStr.substring(0, cardNumberStr.length() - 4);
         censoredPart = maskPart.replaceAll(".", "*");
+        lastFourDigits = cardNumberStr.substring(cardNumberStr.length() - 4);
     }
-    
-    String lastFourDigits = cardNumberStr.substring(cardNumberStr.length() - 4);
     
     String censoredNumber = censoredPart + lastFourDigits;
     return "Registration successful! Here are your details:\n" +

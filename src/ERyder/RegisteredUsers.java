@@ -102,7 +102,7 @@ public class RegisteredUsers {
     public void setLastThreeTrips(String[] lastThreeTrips) {
         this.lastThreeTrips = lastThreeTrips;
     }
-     public String toString() {
+    public String toString() {
         return "RegisteredUsers{" +
                 "fullName='" + fullName + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
