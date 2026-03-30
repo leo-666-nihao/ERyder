@@ -57,9 +57,8 @@ public class UserRegistration {
 
         System.out.print("Please enter your card expiry date (MM/YY): ");
         cardExpiryDate = scanner.nextLine();
-        cardStillValid = analyseCardExpiryDate(cardExpiryDate);
-        if (!cardStillValid) {
-            System.out.println("Your card is expired or the expiry date format is invalid.");
+        if (!analyseCardProvider(cardProvider)) {
+            
         }
         
         System.out.print("Please enter your card CVV: ");

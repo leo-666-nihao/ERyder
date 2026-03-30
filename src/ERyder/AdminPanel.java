@@ -69,10 +69,8 @@ public class AdminPanel {
     }
      private void demoBikeRentalSystem() {
         System.out.println("\n=== Demo Bike Rental System ===");
-        ERyder demoBikeA = new ERyder(201, 75, true, 12.3);
-        ERyder demoBikeB = new ERyder("demoUser", "123-456", 202, 50, true, 8.7);
-        demoBikeA.printRideDetails(20);
-        demoBikeB.printRideDetails(35);
+        BikeRental rental = new BikeRental();
+        rental.simulateApplication();
     }
     private void addNewUsers() {
         System.out.println("=== Add New User ===");
