@@ -1,13 +1,11 @@
 package ERyder;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
 public class AdminPanel {
 
-    private List<RegisteredUsers> registeredUsersList = new ArrayList<>();
+    private final UserService userService = new UserService();
     private static final Scanner scanner = new Scanner(System.in);
 
     public void userManagementOptions() {
@@ -64,13 +62,64 @@ public class AdminPanel {
         System.out.println("2. View Registered Users");
         System.out.println("3. Remove Registered Users");
         System.out.println("4. Update Registered Users");
-        System.out.println("5. Demo Bike Rental System");
-        System.out.println("6. EXIT");
+            System.out.println("5. Demo Bike Rental System");
+            System.out.println("6. EXIT");
     }
      private void demoBikeRentalSystem() {
         System.out.println("\n=== Demo Bike Rental System ===");
-        BikeRental rental = new BikeRental();
-        rental.simulateApplication();
+        BikeService bikeService = new BikeService();
+        RentalService rentalService = new RentalService();
+
+        System.out.print("State if the user is a registered user (true/false): ");
+        String registeredInput = scanner.nextLine();
+        boolean isRegistered = "true".equalsIgnoreCase(registeredInput);
+
+        System.out.print("Enter the email address of the user: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Enter the location of the bike: ");
+        String location = scanner.nextLine();
+
+        System.out.println("\nSimulating the analysis of the rental request...");
+        if (isRegistered) {
+            System.out.println("Welcome back, " + email + "!");
+        } else {
+            System.out.println("You are not a registered user. Proceeding as a guest.");
+        }
+        if (!bikeService.validateLocation(location) || !bikeService.findAvailableBikeAt(location)) {
+            System.out.println("No bikes available at the given location.");
+            return;
+        }
+        System.out.println("A bike is available at the location you requested.");
+
+        System.out.println("\nSimulating bike reservation...");
+        String bikeId = bikeService.reserveBike(location);
+        System.out.println("Reserving bike with ID: " + bikeId);
+        System.out.println("Please follow the on-screen direction to locate your bike and start your trip.");
+
+        String record = rentalService.startRental(bikeId, email);
+
+        System.out.println("\nDisplaying the active rentals...");
+        System.out.println("Active Rentals:");
+        if (rentalService.getActiveRentals().isEmpty()) {
+            System.out.println("No active rentals at the moment.");
+        } else {
+            System.out.println("Bike(s) Currently In Use:");
+            for (String r : rentalService.getActiveRentals()) {
+                System.out.println(r);
+            }
+        }
+
+        System.out.print("\nPress Enter to end the trip...");
+        scanner.nextLine();
+
+        System.out.println("\nSimulating trip end...");
+        rentalService.endRental(bikeId, email);
+        bikeService.releaseBike(bikeId);
+        System.out.println("Your trip has ended. Thank you for riding with us!");
+
+        System.out.println("\nDisplaying the active rentals after trip end...");
+        System.out.println("No active rentals at the moment.");
     }
     private void addNewUsers() {
         System.out.println("=== Add New User ===");
@@ -139,12 +188,13 @@ public class AdminPanel {
             lastThreeTrips
         );
         
-        registeredUsersList.add(newUser);
+        userService.addUser(newUser);
         System.out.println("\nUser " + fullName + " added successfully!");
     }
 
     private void viewRegisteredUsers() {
-        if (registeredUsersList.isEmpty()) {
+        List<RegisteredUsers> list = userService.getAllUsers();
+        if (list.isEmpty()) {
             System.out.println("No registered users to display");
             return;
         }
@@ -152,7 +202,7 @@ public class AdminPanel {
         System.out.println("\n=== Registered Users List ===");
         int userCount = 1;
         
-        for (RegisteredUsers user : registeredUsersList) {
+        for (RegisteredUsers user : list) {
             System.out.println("\n--- User " + userCount + " ---");
             System.out.println("Full Name: " + user.getFullName());
             System.out.println("Email Address: " + user.getEmailAddress());
@@ -180,7 +230,7 @@ public class AdminPanel {
     }
 
     private void removeRegisteredUsers() {
-        if (registeredUsersList.isEmpty()) {
+        if (userService.getAllUsers().isEmpty()) {
             System.out.println("No registered users to remove");
             return;
         }
@@ -189,26 +239,16 @@ public class AdminPanel {
         System.out.print("Please enter the email address of the user to remove: ");
         String emailAddress = scanner.nextLine();
         
-        boolean found = false;
-        
-        Iterator<RegisteredUsers> iterator = registeredUsersList.iterator();
-        while (iterator.hasNext()) {
-            RegisteredUsers user = iterator.next();
-            if (user.getEmailAddress().equals(emailAddress)) {
-                iterator.remove();
-                System.out.println("User " + emailAddress + " removed successfully!");
-                found = true;
-                break;
-            }
-        }
-        
-        if (!found) {
+        boolean removed = userService.removeByEmail(emailAddress);
+        if (removed) {
+            System.out.println("User " + emailAddress + " removed successfully!");
+        } else {
             System.out.println("No user found with this email address");
         }
     }
 
     private void updateRegisteredUsers() {
-        if (registeredUsersList.isEmpty()) {
+        if (userService.getAllUsers().isEmpty()) {
             System.out.println("No registered users to update");
             return;
         }
@@ -217,57 +257,50 @@ public class AdminPanel {
         System.out.print("Please enter the email address of the user to update: ");
         String emailAddress = scanner.nextLine();
         
-        boolean found = false;
-        
-        for (int i = 0; i < registeredUsersList.size(); i++) {
-            if (registeredUsersList.get(i).getEmailAddress().equals(emailAddress)) {
-                System.out.println("User found, please enter new information:");
-                
-                System.out.print("New full name: ");
-                String fullName = scanner.nextLine();
-                
-                System.out.print("New email address: ");
-                String newEmailAddress = scanner.nextLine();
-                
-                System.out.print("New date of birth (YYYY-MM-DD): ");
-                String dateOfBirth = scanner.nextLine();
-                
-                System.out.print("New user type: ");
-                String userType = scanner.nextLine();
-                
-                System.out.print("New card number: ");
-                String cardNumber = scanner.nextLine();
-                
-                System.out.print("New card expiry date (MM/YY): ");
-                String cardExpiryDate = scanner.nextLine();
-                
-                System.out.print("New card provider: ");
-                String cardProvider = scanner.nextLine();
-                
-                System.out.print("New CVV: ");
-                String cvv = scanner.nextLine();
-                
-                String[] lastThreeTrips = registeredUsersList.get(i).getLastThreeTrips();
-                
-                RegisteredUsers updatedUser = new RegisteredUsers(
-                    fullName, newEmailAddress, dateOfBirth, userType,
-                    cardNumber, cardExpiryDate, cardProvider, cvv,
-                    lastThreeTrips
-                );
-                
-                registeredUsersList.set(i, updatedUser);
-                System.out.println("User information updated successfully!");
-                found = true;
-                break;
-            }
-        }
-        
-        if (!found) {
+        RegisteredUsers existing = userService.findByEmail(emailAddress);
+        if (existing == null) {
             System.out.println("No user found with this email address");
+            return;
         }
-    }
-
-    public List<RegisteredUsers> getRegisteredUsersList() {
-        return registeredUsersList;
+        System.out.println("User found, please enter new information:");
+                
+        System.out.print("New full name: ");
+        String fullName = scanner.nextLine();
+        
+        System.out.print("New email address: ");
+        String newEmailAddress = scanner.nextLine();
+        
+        System.out.print("New date of birth (YYYY-MM-DD): ");
+        String dateOfBirth = scanner.nextLine();
+        
+        System.out.print("New user type: ");
+        String userType = scanner.nextLine();
+        
+        System.out.print("New card number: ");
+        String cardNumber = scanner.nextLine();
+        
+        System.out.print("New card expiry date (MM/YY): ");
+        String cardExpiryDate = scanner.nextLine();
+        
+        System.out.print("New card provider: ");
+        String cardProvider = scanner.nextLine();
+        
+        System.out.print("New CVV: ");
+        String cvv = scanner.nextLine();
+        
+        String[] lastThreeTrips = existing.getLastThreeTrips();
+        
+        RegisteredUsers updatedUser = new RegisteredUsers(
+            fullName, newEmailAddress, dateOfBirth, userType,
+            cardNumber, cardExpiryDate, cardProvider, cvv,
+            lastThreeTrips
+        );
+        
+        boolean ok = userService.updateByEmail(emailAddress, updatedUser);
+        if (ok) {
+            System.out.println("User information updated successfully!");
+        } else {
+            System.out.println("Update failed.");
+        }
     }
 }
